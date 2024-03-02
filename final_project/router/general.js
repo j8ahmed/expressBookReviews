@@ -117,8 +117,29 @@ public_users.get('/title/:title',function (req, res) {
     const booksFiltered = Object.keys(books).map(key => books[key]).filter((book) => {
         return book.title.includes(title)
     })
-    res.send(booksFiltered)
+    const myPromise = new Promise((resolve,reject) => {
+        setTimeout(() => {
+            resolve(books)
+        },6000)
+    }).then(data => {
+        return res.status(200).json(booksFiltered)
+    })
 });
+
+/* Code to call enpoint from site and return the readable stream
+
+(function testGetAsync(){
+    fetch("http://localhost:5000/title/Things")
+        .then(async res => {
+            const data = await res.json()
+            console.log(data)
+        })
+        .catch(err => {
+            console.error(err)
+        })
+})()
+
+*/
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {

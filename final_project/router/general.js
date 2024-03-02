@@ -86,8 +86,30 @@ public_users.get('/author/:author',function (req, res) {
     const booksFiltered = Object.keys(books).map(key => books[key]).filter((book) => {
         return book.author.includes(author)
     })
-    res.send(booksFiltered)
+    const myPromise = new Promise((resolve,reject) => {
+        setTimeout(() => {
+            resolve(books)
+        },6000)
+    }).then(data => {
+        return res.status(200).json(booksFiltered)
+    })
 });
+
+/* Code to call enpoint from site and return the readable stream
+
+(function testGetAsync(){
+    fetch("http://localhost:5000/author/Achebe")
+        .then(async res => {
+            const data = await res.json()
+            console.log(data)
+        })
+        .catch(err => {
+            console.error(err)
+        })
+})()
+
+*/
+
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
